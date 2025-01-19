@@ -1,0 +1,37 @@
+<!--este es el artchivo donde esta la estructura de la pagina web, y es llamada desde 'funciones.js
+a travez de la instrucción de la función "doGet"-> return HtmlService.createTemplateFromFile('web').evaluate().setTitle('TALLER HEMAQ');
+Y ACA MISMO SE COLOCA EL TITULO POR LO QUE EN EL ARCHIVO 'web.html', lo podemos quitar '-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--
+    <?!= HtmlService.createHtmlOutputFromFile('css').getContent(); ?>
+
+    con esta instruccion traemos todo lo que este dentro del archivo css para que se ejecute diréctamente en la pgina que son 
+    los estilos que se veran en la página, pero esta instrucción la vamos a usar varias veces por lo que es mejor colocarla en una funcion
+    esto lo haremos en el archivo funciones,js
+    se llamara a travez de esta instrucción-->
+
+    <!--archivo CSS y Bootstrap-->
+    <?!= obtenerDatosHTML('css'); ?>
+    <!--esto tambien lo haremos con los archivos para la cabecera los pie de pagina y otros que se quieran colocar pero dentro del body-->
+    
+    
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <!--HEADER-->
+    <?!= obtenerDatosHTML('header'); ?>
+
+    <!--MAIN-->
+    <?!= obtenerDatosHTML('main'); ?>
+
+    <!--FOOTER-->
+    <?!= obtenerDatosHTML('footer'); ?>
+
+    <!--JAVASCRIPT-->
+    <?!= obtenerDatosHTML('js'); ?>
+
+</body>
+</html>
