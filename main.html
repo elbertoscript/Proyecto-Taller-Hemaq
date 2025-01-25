@@ -14,18 +14,15 @@
     <div>
         <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
             <!-- toast -->
-            <div id="liveToast" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div id="notificacion" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive" aria-atomic="true">
                 
-                <div class="toast-header">
-                    <img src="..." class="rounded me-2" alt="...">
-                    <strong class="me-auto">Bootstrap</strong>
-                    <small>11 mins ago</small>
-                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                <div class="toast-header p-0">
+                    <div class="icono-notificacion"><i id="iconoNotificacion"></i></div>
+                    <strong class="me-auto" id="tituloNotificacion"></strong>
+                    <button type="button" class="btn-close m-2" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
 
-                <div class="toast-body">
-                    Hello, world! This is a toast message.
-                </div>
+                <div class="toast-body" id="mensajeNotificacion"></div>
 
             </div>
         </div>
