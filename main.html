@@ -1,14 +1,36 @@
 <main>
-    <!--Botones-->
-    <div class="d-flex justify-content-center mb-4">
-        <button class="btn btn-success m-3" onclick="crearTablaClientes()">Mostrar Clientes</button>
+    <!--FORMULARIO -->
+    <div class= "container-lg d-flex justify-content-center my-3">
+        <form onsubmit="insertarClientes()" method="dialog" id="formulario">
+
+            <div class='mb-3'>
+                <label for="Tienda" class="form-label">Tienda o Lugar</label>
+                <input type="text" class="form-control" name="Tienda" id="Tienda">
+
+            </div>
+
+            <div class='mb-3'> 
+                <label for="Fecha" class="form-label">Fecha</label>
+                <input type="text" class="form-control" name="Fecha" id="Fecha">
+            </div>
+
+            <div class='mb-3'>
+                <label for="Servicio" class="form-label">Servicio</label>
+                <input type="text" class="form-control" name="Servicio" id="Servicio">
+            </div>
+
+            <!--Botones-->
+            <button type="button" class="btn btn-success m-3" onclick="crearTablaClientes()">Mostrar Clientes</button>
+            <button type="submit" class="btn btn-primary"> Crear Cliente 2025</button>
+        </form>
+
     </div>
 
+    <!--icono Espera-->
+    <div class="d-flex justify-content-center" id="MC"></div>
+
     <!--Tabla de clientes-->
-    <div class="container-sm mb-4 w-50" id="divContactos">
-
-
-    </div>    
+    <div class="container col-12 col-lg-10 d-flex " id="divContactos"></div>    
 
     <!--NOTIFICACIONES-->
     <div>

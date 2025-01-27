@@ -1,10 +1,68 @@
 
 <script>
+    function insertarClientes()
+    {
+        
+        //obtener datos
+        let Tienda = document.getElementById("Tienda").value;
+        let Fecha = document.getElementById("Fecha").value;
+        let Servicio = document.getElementById("Servicio").value;
+
+        //eliminar tabla
+        eliminarTabla();
+
+
+        //crear icono de carga
+        crearLoader('MC');
+
+        google.script.run
+        .withSuccessHandler(clienteInsertadoCorrectamente)
+        .withFailureHandler(clienteInsertadoConError)
+        .insertarClientes(Tienda, Fecha, Servicio);
+
+        
+
+    }
+
+    function clienteInsertadoCorrectamente()
+    {
+
+        //eliminamos los datos de los input
+        document.getElementById("Tienda").value = '';
+        document.getElementById("Fecha").value = '';
+        document.getElementById("Servicio").value = '';
+
+        //mostrar notificación
+        crearNotificacionOK('Cliente insertado con exito' , 'CLIENTE OK');
+
+        //ELIMINAR LOADER
+        eliminarLoader();
+
+        //mostramos la tabla
+        crearTablaClientes();
+    }
+
+    function clienteInsertadoConError()
+    {
+        crearNotificacionError('No se pudo crear el cliente, intente de nuevo' , 'ERROR DE INGRESO');
+
+        //ELIMINAR LOADER
+        eliminarLoader();
+
+        //mostramos la tabla
+        crearTablaClientes();
+    }
+
+
     
     function crearTablaClientes()
     {
-        let tabla = document.getElementById('tablaClientes');
-        if(tabla) tabla.remove();
+        
+        //eliminamos la tabla si existe
+        eliminarTabla();
+
+        //crear icono de carga
+        crearLoader('MC');
 
         google.script.run
         .withSuccessHandler(crearTablaContactosCorrectamente)
@@ -12,6 +70,8 @@
         .obtenerClientes();
 
     }
+
+    
 
     function crearTablaContactosCorrectamente(obj)
     {
@@ -50,12 +110,15 @@
         //agregamos el cuerpo a la tabla
         tabla.appendChild(tablaBody);
         //agregamos clases a la tabla
-        tabla.classList.add('table','table-striped', 'border-4', 'table-success', 'border-dark', 'justify-content-center');
+        tabla.classList.add('table','table-striped', 'border','border-6', 'border-dark');
         //agregamos tabla a la página
         document.getElementById('divContactos').appendChild(tabla);
 
         //mostrar notificación de ok
         crearNotificacionOK('Contactos obtenidos correctamente', 'Todo en orden');
+
+        //eliminar el iconoCarga
+        eliminarLoader();
     }
             
 
@@ -63,7 +126,11 @@
     {
         //mostrar notificación error
         crearNotificacionError('No hay conexión con la basa de datos o se ha perdido el enlace, verifique su conexión a internet', 'Error en la comunicación');
+
+        //eliminar el iconoCarga
+        eliminarLoader ();
     }
+
 
     function crearNotificacion(mensaje, titulo)
     {
@@ -117,6 +184,32 @@
         let elementoNotificacion = document.getElementById("notificacion");
         elementoNotificacion.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue(color);
     }
+
+    function crearLoader(elementoPadre)
+    {
+        eliminarLoader();
+        let loader = document.createElement('div');
+        loader.id = 'loader';
+        loader.appendChild(document.createElement('div'));
+        loader.appendChild(document.createElement('div'));
+        loader.appendChild(document.createElement('div'));
+        loader.appendChild(document.createElement('div'));
+        loader.classList.add('lds-ellipsis');
+        return document.getElementById(elementoPadre).appendChild(loader);
+    }
+
+    function eliminarLoader()
+    {
+        let loader = document.getElementById('loader');
+        if(loader) loader.remove();
+    }
+
+    function eliminarTabla()
+    {
+        let tabla = document.getElementById('tablaClientes');
+        if(tabla) tabla.remove();
+    }
+    
    
 </script>
 
