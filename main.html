@@ -1,43 +1,26 @@
 <main>
-    <!--FORMULARIO -->
-    <div class= "container-lg d-flex justify-content-center my-3">
-        <form onsubmit="insertarClientes()" method="dialog" id="formulario">
+    <!--Botones Superiores-->
+    <div class="container-lg d-flex justify-content-center my-3">
 
-            <div class='mb-3'>
-                <label for="Tienda" class="form-label">Tienda o Lugar</label>
-                <input type="text" class="form-control" name="Tienda" id="Tienda">
-
-            </div>
-
-            <div class='mb-3'> 
-                <label for="Fecha" class="form-label">Fecha</label>
-                <input type="text" class="form-control" name="Fecha" id="Fecha">
-            </div>
-
-            <div class='mb-3'>
-                <label for="Servicio" class="form-label">Servicio</label>
-                <input type="text" class="form-control" name="Servicio" id="Servicio">
-            </div>
-
-            <!--Botones-->
-            <button type="button" class="btn btn-success m-3" onclick="crearTablaClientes()">Mostrar Clientes</button>
-            <button type="submit" class="btn btn-primary"> Crear Cliente 2025</button>
-        </form>
-
+        <button type="button" class="btn btn-success m-3" onclick="crearTablaClientes()">Mostrar Clientes</button>
+        <button type="button" class="btn btn-primary m-3" data-bs-toggle="modal" data-bs-target="#crearClienteModal">
+            Crear Cliente
+        </button>
     </div>
 
     <!--icono Espera-->
     <div class="d-flex justify-content-center" id="MC"></div>
 
     <!--Tabla de clientes-->
-    <div class="container col-12 col-lg-10 d-flex " id="divContactos"></div>    
+    <div class="container col-12 col-lg-10 d-flex " id="divContactos"></div>
 
     <!--NOTIFICACIONES-->
     <div>
         <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
             <!-- toast -->
-            <div id="notificacion" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive" aria-atomic="true">
-                
+            <div id="notificacion" class="toast align-items-center text-white border-0" role="alert"
+                aria-live="assertive" aria-atomic="true">
+
                 <div class="toast-header p-0">
                     <div class="icono-notificacion"><i id="iconoNotificacion"></i></div>
                     <strong class="me-auto" id="tituloNotificacion"></strong>
@@ -46,6 +29,45 @@
 
                 <div class="toast-body" id="mensajeNotificacion"></div>
 
+            </div>
+        </div>
+    </div>    
+
+    <!-- Modal -->
+    <div class="modal fade" id="crearClienteModal" tabindex="-1" aria-labelledby="titulocrearClienteModal"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="titulocrearClienteModal">Creando Nuevo Cliente</h5>
+                </div>
+
+                <!--FORMULARIO CREAR CLIENTES-->
+                <form onsubmit="insertarClientes()" method="dialog" id="formulario">
+                    <div class="modal-body">
+
+                        <div class='mb-3'>
+                            <label for="Tienda" class="form-label">Tienda o Lugar</label>
+                            <input type="text" class="form-control" name="Tienda" id="Tienda" required>
+                        </div>
+
+                        <div class='mb-3'>
+                            <label for="Fecha" class="form-label">Fecha</label>
+                            <input type="text" class="form-control" name="Fecha" id="Fecha" >
+                        </div>
+
+                        <div class='mb-3'>
+                            <label for="Servicio" class="form-label">Servicio</label>
+                            <input type="text" class="form-control" name="Servicio" id="Servicio" required>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancerlar</button>
+                        <button type="submit" class="btn btn-success">Crear Clientes</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

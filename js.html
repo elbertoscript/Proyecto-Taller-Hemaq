@@ -1,12 +1,14 @@
-
 <script>
-    function insertarClientes()
-    {
-        
+    function insertarClientes() {
+
         //obtener datos
         let Tienda = document.getElementById("Tienda").value;
         let Fecha = document.getElementById("Fecha").value;
         let Servicio = document.getElementById("Servicio").value;
+
+        //cerrar Modal
+
+        bootstrap.Modal.getInstance(document.getElementById('crearClienteModal')).hide();
 
         //eliminar tabla
         eliminarTabla();
@@ -16,16 +18,15 @@
         crearLoader('MC');
 
         google.script.run
-        .withSuccessHandler(clienteInsertadoCorrectamente)
-        .withFailureHandler(clienteInsertadoConError)
-        .insertarClientes(Tienda, Fecha, Servicio);
+            .withSuccessHandler(clienteInsertadoCorrectamente)
+            .withFailureHandler(clienteInsertadoConError)
+            .insertarClientes(Tienda, Fecha, Servicio);
 
-        
+
 
     }
 
-    function clienteInsertadoCorrectamente()
-    {
+    function clienteInsertadoCorrectamente() {
 
         //eliminamos los datos de los input
         document.getElementById("Tienda").value = '';
@@ -33,7 +34,7 @@
         document.getElementById("Servicio").value = '';
 
         //mostrar notificación
-        crearNotificacionOK('Cliente insertado con exito' , 'CLIENTE OK');
+        crearNotificacionOK('Cliente insertado con exito', 'CLIENTE OK');
 
         //ELIMINAR LOADER
         eliminarLoader();
@@ -42,9 +43,8 @@
         crearTablaClientes();
     }
 
-    function clienteInsertadoConError()
-    {
-        crearNotificacionError('No se pudo crear el cliente, intente de nuevo' , 'ERROR DE INGRESO');
+    function clienteInsertadoConError() {
+        crearNotificacionError('No se pudo crear el cliente, intente de nuevo', 'ERROR DE INGRESO');
 
         //ELIMINAR LOADER
         eliminarLoader();
@@ -54,10 +54,9 @@
     }
 
 
-    
-    function crearTablaClientes()
-    {
-        
+
+    function crearTablaClientes() {
+
         //eliminamos la tabla si existe
         eliminarTabla();
 
@@ -65,52 +64,48 @@
         crearLoader('MC');
 
         google.script.run
-        .withSuccessHandler(crearTablaContactosCorrectamente)
-        .withFailureHandler(crearTablaContactosError)
-        .obtenerClientes();
+            .withSuccessHandler(crearTablaContactosCorrectamente)
+            .withFailureHandler(crearTablaContactosError)
+            .obtenerClientes();
 
     }
 
-    
 
-    function crearTablaContactosCorrectamente(obj)
-    {
+
+    function crearTablaContactosCorrectamente(obj) {
         tabla = document.createElement('table');
         tabla.id = 'tablaClientes';
 
         let tablaHeader = document.createElement('thead');
         let tablaBody = document.createElement('tbody');
-                
+
         //header(cabecera) de la tabla
         let primeraFila = document.createElement('tr');
-        for(let i = 0; i<obj[0].length; i++)
-        {
+        for (let i = 0; i < obj[0].length; i++) {
             let celda = document.createElement('td');
             celda.textContent = obj[0][i];
-            primeraFila.appendChild(celda); 
+            primeraFila.appendChild(celda);
         }
         tablaHeader.appendChild(primeraFila);
         tabla.appendChild(tablaHeader);
 
         //body(cuerpo) de la tabla
-        for(let i = 1;i < obj.length; i++)
-        {
+        for (let i = 1; i < obj.length; i++) {
             let fila = document.createElement('tr');
-            for(let j = 0; j < obj[i].length; j++)
-            {
+            for (let j = 0; j < obj[i].length; j++) {
                 let celda = document.createElement('td');
                 celda.textContent = obj[i][j];
-                fila.appendChild(celda); 
+                fila.appendChild(celda);
             }
-            tablaBody.appendChild(fila); 
+            tablaBody.appendChild(fila);
         }
-               
+
         //agregamos clases a la cabecera
         tablaHeader.classList.add('table-dark');
         //agregamos el cuerpo a la tabla
         tabla.appendChild(tablaBody);
         //agregamos clases a la tabla
-        tabla.classList.add('table','table-striped', 'border','border-6', 'border-dark');
+        tabla.classList.add('table', 'table-striped', 'border', 'border-6', 'border-dark');
         //agregamos tabla a la página
         document.getElementById('divContactos').appendChild(tabla);
 
@@ -120,73 +115,63 @@
         //eliminar el iconoCarga
         eliminarLoader();
     }
-            
 
-    function crearTablaContactosError()
-    {
+
+    function crearTablaContactosError() {
         //mostrar notificación error
         crearNotificacionError('No hay conexión con la basa de datos o se ha perdido el enlace, verifique su conexión a internet', 'Error en la comunicación');
 
         //eliminar el iconoCarga
-        eliminarLoader ();
+        eliminarLoader();
     }
 
 
-    function crearNotificacion(mensaje, titulo)
-    {
+    function crearNotificacion(mensaje, titulo) {
         document.getElementById("mensajeNotificacion").textContent = mensaje;
         document.getElementById("tituloNotificacion").textContent = titulo;
         let elementoNotificacion = document.getElementById("notificacion");
         bootstrap.Toast.getOrCreateInstance(elementoNotificacion).show();
     }
 
-    function crearNotificacionOK(mensaje, titulo)
-    {
+    function crearNotificacionOK(mensaje, titulo) {
         crearNotificacion(mensaje, titulo);
         crearIconoNotificacionOK();
         crearColorNotificacion('--color-verde-oscuro');
     }
 
-    function crearNotificacionError(mensaje, titulo)
-    {
+    function crearNotificacionError(mensaje, titulo) {
         crearNotificacion(mensaje, titulo);
         crearIconoNotificacionError();
         crearColorNotificacion('--color-rojo-oscuro');
     }
 
-    function crearNotificacionAdvertencia(mensaje, titulo)
-    {
+    function crearNotificacionAdvertencia(mensaje, titulo) {
         crearNotificacion(mensaje, titulo);
         crearIconoNotificacionAdvertencia();
         crearColorNotificacion('--color-amarillo-oscuro');
     }
 
-    function crearIconoNotificacionOK()
-    {
+    function crearIconoNotificacionOK() {
         document.getElementById("iconoNotificacion").className = '';
         document.getElementById("iconoNotificacion").classList.add('bi', 'bi-check2-square');
     }
 
-    function crearIconoNotificacionError()
-    {
+    function crearIconoNotificacionError() {
         document.getElementById("iconoNotificacion").className = '';
         document.getElementById("iconoNotificacion").classList.add('bi', 'bi-bug');
     }
 
-    function crearIconoNotificacionAdvertencia()
-    {
+    function crearIconoNotificacionAdvertencia() {
         document.getElementById("iconoNotificacion").className = '';
         document.getElementById("iconoNotificacion").classList.add('bi', 'bi-exclamation-square');
     }
 
-    function crearColorNotificacion(color)
-    {
+    function crearColorNotificacion(color) {
         let elementoNotificacion = document.getElementById("notificacion");
         elementoNotificacion.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue(color);
     }
 
-    function crearLoader(elementoPadre)
-    {
+    function crearLoader(elementoPadre) {
         eliminarLoader();
         let loader = document.createElement('div');
         loader.id = 'loader';
@@ -198,18 +183,15 @@
         return document.getElementById(elementoPadre).appendChild(loader);
     }
 
-    function eliminarLoader()
-    {
+    function eliminarLoader() {
         let loader = document.getElementById('loader');
-        if(loader) loader.remove();
+        if (loader) loader.remove();
     }
 
-    function eliminarTabla()
-    {
+    function eliminarTabla() {
         let tabla = document.getElementById('tablaClientes');
-        if(tabla) tabla.remove();
+        if (tabla) tabla.remove();
     }
-    
-   
-</script>
 
+
+</script>
