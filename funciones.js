@@ -25,7 +25,7 @@ function obtenerClientes() {
 }
 
 //INSERTANDO DATOS A CADA HOJA
-function insertarClientes(Tienda, Fecha, Servicio) {
-    HOJA.appendRow([Tienda, Fecha, Servicio]);
+function insertarClientes(Tienda, Fecha, Servicio, Cliente, RUT) {
+    HOJA.appendRow([Tienda, Fecha, Servicio, Cliente, RUT]);
 }
 

@@ -5,6 +5,8 @@
         let Tienda = document.getElementById("Tienda").value;
         let Fecha = document.getElementById("Fecha").value;
         let Servicio = document.getElementById("Servicio").value;
+        let Cliente = document.getElementById("Cliente").value;
+        let RUT = document.getElementById("RUT").value;
 
         //cerrar Modal
 
@@ -20,10 +22,7 @@
         google.script.run
             .withSuccessHandler(clienteInsertadoCorrectamente)
             .withFailureHandler(clienteInsertadoConError)
-            .insertarClientes(Tienda, Fecha, Servicio);
-
-
-
+            .insertarClientes(Tienda, Fecha, Servicio, Cliente, RUT);
     }
 
     function clienteInsertadoCorrectamente() {
@@ -32,6 +31,8 @@
         document.getElementById("Tienda").value = '';
         document.getElementById("Fecha").value = '';
         document.getElementById("Servicio").value = '';
+        document.getElementById("Cliente").value;
+        document.getElementById("RUT").value;
 
         //mostrar notificación
         crearNotificacionOK('Cliente insertado con exito', 'CLIENTE OK');
@@ -129,8 +130,7 @@
     function crearNotificacion(mensaje, titulo) {
         document.getElementById("mensajeNotificacion").textContent = mensaje;
         document.getElementById("tituloNotificacion").textContent = titulo;
-        let elementoNotificacion = document.getElementById("notificacion");
-        bootstrap.Toast.getOrCreateInstance(elementoNotificacion).show();
+        bootstrap.Toast.getOrCreateInstance(document.getElementById("notificacion")).show();
     }
 
     function crearNotificacionOK(mensaje, titulo) {

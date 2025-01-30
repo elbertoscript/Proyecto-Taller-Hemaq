@@ -12,7 +12,7 @@
     <div class="d-flex justify-content-center" id="MC"></div>
 
     <!--Tabla de clientes-->
-    <div class="container col-12 col-lg-10 d-flex " id="divContactos"></div>
+    <div class="col-12 col-lg-10 d-flex " id="divContactos"></div>
 
     <!--NOTIFICACIONES-->
     <div>
@@ -46,7 +46,6 @@
                 <!--FORMULARIO CREAR CLIENTES-->
                 <form onsubmit="insertarClientes()" method="dialog" id="formulario">
                     <div class="modal-body">
-
                         <div class='mb-3'>
                             <label for="Tienda" class="form-label">Tienda o Lugar</label>
                             <input type="text" class="form-control" name="Tienda" id="Tienda" required>
@@ -60,6 +59,19 @@
                         <div class='mb-3'>
                             <label for="Servicio" class="form-label">Servicio</label>
                             <input type="text" class="form-control" name="Servicio" id="Servicio" required>
+                        </div>
+
+                        <div class="row" >
+                            <div class="col-6">
+                                <label for="Cliente" class="form-label">Cliente</label>
+                                <input type="text" class="form-control" name="Cliente" id="Cliente" required>
+                            </div>
+
+                            <div class='col-6 '>
+                                <label for="RUT" class="form-label">RUT</label>
+                                <input type="text" class="form-control" name="RUT" id="RUT" required>
+                            </div>
+
                         </div>
                     </div>
 
