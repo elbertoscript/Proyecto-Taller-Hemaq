@@ -15,14 +15,13 @@
         //eliminar tabla
         eliminarTabla();
 
-
         //crear icono de carga
         crearLoader('MC');
 
         google.script.run
-            .withSuccessHandler(clienteInsertadoCorrectamente)
-            .withFailureHandler(clienteInsertadoConError)
-            .insertarClientes(Tienda, Fecha, Servicio, Cliente, RUT);
+        .withSuccessHandler(clienteInsertadoCorrectamente)
+        .withFailureHandler(clienteInsertadoConError)
+        .insertarClientes(Tienda, Fecha, Servicio, Cliente, RUT);
     }
 
     function clienteInsertadoCorrectamente() {
@@ -54,8 +53,6 @@
         crearTablaClientes();
     }
 
-
-
     function crearTablaClientes() {
 
         //eliminamos la tabla si existe
@@ -65,13 +62,10 @@
         crearLoader('MC');
 
         google.script.run
-            .withSuccessHandler(crearTablaContactosCorrectamente)
-            .withFailureHandler(crearTablaContactosError)
-            .obtenerClientes();
-
+        .withSuccessHandler(crearTablaContactosCorrectamente)
+        .withFailureHandler(crearTablaContactosError)
+        .obtenerClientes();
     }
-
-
 
     function crearTablaContactosCorrectamente(obj) {
         tabla = document.createElement('table');
@@ -82,11 +76,19 @@
 
         //header(cabecera) de la tabla
         let primeraFila = document.createElement('tr');
-        for (let i = 0; i < obj[0].length; i++) {
+        for (let i = 0; i < obj[0].length; i++)
+        {
             let celda = document.createElement('td');
             celda.textContent = obj[0][i];
             primeraFila.appendChild(celda);
         }
+
+        //ageregar columna opciones
+        let celdaOpciones = document.createElement('td');
+        celdaOpciones.textContent = 'OPCIONES';
+        primeraFila.appendChild(celdaOpciones);
+       
+        //agregar la fila al header de la tabla
         tablaHeader.appendChild(primeraFila);
         tabla.appendChild(tablaHeader);
 
@@ -98,6 +100,8 @@
                 celda.textContent = obj[i][j];
                 fila.appendChild(celda);
             }
+            //agregar los botones a la fila
+            fila.appendChild(crearCeldaBotones(i+1,obj[i]));
             tablaBody.appendChild(fila);
         }
 
@@ -115,6 +119,179 @@
 
         //eliminar el iconoCarga
         eliminarLoader();
+    }
+
+    function crearCeldaBotones(numFila,datosCliente)
+    {
+        //crear celda
+        let celda = document.createElement('td');
+        celda.classList.add('text-center');
+
+        //crear boton borrar
+        let botonBorrar = document.createElement('button');
+        botonBorrar.onclick = () => borrarCliente(numFila);
+        botonBorrar.classList.add('btn','btn-danger','m-1');
+        
+        //icono borrar
+        let iconoBorrar = document.createElement('i');
+        iconoBorrar.classList.add('bi','bi-trash');
+        botonBorrar.appendChild(iconoBorrar);
+
+        //crear boton modificar
+        let botonModificar = document.createElement('button');
+        botonModificar.onclick = () => abrirModalModificarCliente(numFila,datosCliente);
+        botonModificar.classList.add('btn','btn-warning','m-1');
+        
+        //icono modificar
+        let iconoModificar = document.createElement('i');
+        iconoModificar.classList.add('bi','bi-pencil-square');
+        botonModificar.appendChild(iconoModificar);
+
+        //agregar botonoes a la celda
+        celda.appendChild(botonBorrar);
+        celda.appendChild(botonModificar);
+
+        return celda;
+
+    } 
+
+    function abrirModalCrearCliente()
+    {
+        //boton crear
+        let boton = document.getElementById('botonCrearModificar');
+        boton.textContent = 'Crear Cliente';
+        boton.classList = '';
+        boton.classList.add('btn','btn-success');
+
+        //cambiar titulo
+        document.getElementById('tituloModal').textContent = 'Crear Cliente';
+
+        //modificar submit
+        document.getElementById('formulario').onsubmit = () => insertarClientes();
+
+        //obtener clientes
+        document.getElementById('Tienda').value = '';
+        document.getElementById('Fecha').value = '';
+        document.getElementById('Servicio').value = '';
+        document.getElementById('Cliente').value = '';
+        document.getElementById('RUT').value = '';
+
+        //abrir clientes
+        bootstrap.Modal.getOrCreateInstance(document.getElementById("crearClienteModal")).show();
+    }
+
+    function abrirModalModificarCliente(numFila,datosCliente)
+    {
+        //boton modificar
+        let boton = document.getElementById('botonCrearModificar');
+        boton.textContent = 'Modificar Cliente';
+        boton.classList = '';
+        boton.classList.add('btn','btn-warning');
+
+
+        //cambiar titulo
+        document.getElementById('tituloModal').textContent = 'Modificar Cliente';
+
+        //modificar submit
+        document.getElementById('formulario').onsubmit = () => modificarCliente(numFila);
+
+        //obtener datos clientes
+        document.getElementById('Tienda').value = datosCliente[0];
+        document.getElementById('Fecha').value = datosCliente[1];
+        document.getElementById('Servicio').value = datosCliente[2];
+        document.getElementById('Cliente').value = datosCliente[3];
+        document.getElementById('RUT').value = datosCliente[4];
+
+        //abrir clientes
+        bootstrap.Modal.getOrCreateInstance(document.getElementById("crearClienteModal")).show();
+
+    }
+
+    function modificarCliente(numFila)
+    {
+        //cerrar el modal
+        bootstrap.Modal.getOrCreateInstance(document.getElementById("crearClienteModal")).hide();
+
+        //obtener nuevos datos a partir del formulario
+        let Tienda = document.getElementById("Tienda").value;
+        let Fecha = document.getElementById("Fecha").value;
+        let Servicio = document.getElementById("Servicio").value;
+        let Cliente = document.getElementById("Cliente").value;
+        let RUT = document.getElementById("RUT").value;
+
+
+        //eliminar tabla
+        eliminarTabla();
+
+
+        //crear icono de carga
+        crearLoader('MC');
+
+        google.script.run
+        .withSuccessHandler(clienteModificadoCorrectamente)
+        .withFailureHandler(clienteModificadoConError)
+        .modificarCliente(numFila, {Tienda, Fecha, Servicio, Cliente, RUT});
+    }
+
+    function clienteModificadoCorrectamente()
+    {
+        //mostrar notificación
+        crearNotificacionOK('Cliente Modificado con exito', 'MODIFICADO OK');
+
+        //ELIMINAR LOADER
+        eliminarLoader();
+
+        //mostramos la tabla
+        crearTablaClientes();
+    }
+
+    function clienteModificadoConError()
+    {
+        crearNotificacionError('No se pudo modificar el cliente, intente de nuevo', 'ERROR DE MODIFICACIÓN');
+
+        //ELIMINAR LOADER
+        eliminarLoader();
+
+        //mostramos la tabla
+        crearTablaClientes();
+    }
+
+    function borrarCliente(numFila)
+    {
+        //eliminar tabla
+        eliminarTabla();
+
+
+        //crear icono de carga
+        crearLoader('MC');
+
+        google.script.run
+        .withSuccessHandler(clienteBorradoCorrectamente)
+        .withFailureHandler(clienteBorradoConError)
+        .borrarCliente(numFila);
+    }
+
+    function clienteBorradoCorrectamente()
+    {
+        //mostrar notificación
+        crearNotificacionOK('Cliente borrado con exito', 'BORRADO OK');
+
+        //ELIMINAR LOADER
+        eliminarLoader();
+
+        //mostramos la tabla
+        crearTablaClientes();
+    }
+
+    function clienteBorradoConError()
+    {
+        crearNotificacionError('No se pudo borrar el cliente, intente de nuevo', 'ERROR DE BRRADO');
+
+        //ELIMINAR LOADER
+        eliminarLoader();
+
+        //mostramos la tabla
+        crearTablaClientes();
     }
 
 

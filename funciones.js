@@ -29,3 +29,13 @@ function insertarClientes(Tienda, Fecha, Servicio, Cliente, RUT) {
     HOJA.appendRow([Tienda, Fecha, Servicio, Cliente, RUT]);
 }
 
+function borrarCliente(numFila)
+{
+    HOJA.deleteRow(numFila);
+}
+
+function modificarCliente(numFila,datos)
+{
+    let celdas = HOJA.getRange('A'+numFila+':E'+numFila);
+    celdas.setValues([[datos.Tienda, datos.Fecha, datos.Servicio, datos.Cliente, datos.RUT]]);
+}

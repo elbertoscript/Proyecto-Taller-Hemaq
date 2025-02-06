@@ -3,9 +3,7 @@
     <div class="container-lg d-flex justify-content-center my-3">
 
         <button type="button" class="btn btn-success m-3" onclick="crearTablaClientes()">Mostrar Clientes</button>
-        <button type="button" class="btn btn-primary m-3" data-bs-toggle="modal" data-bs-target="#crearClienteModal">
-            Crear Cliente
-        </button>
+        <button type="button" class="btn btn-primary m-3" onclick="abrirModalCrearCliente()">Crear Cliente</button>
     </div>
 
     <!--icono Espera-->
@@ -40,7 +38,7 @@
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h5 class="modal-title" id="titulocrearClienteModal">Creando Nuevo Cliente</h5>
+                    <h5 class="modal-title" id="tituloModal">Creando Nuevo Cliente</h5>
                 </div>
 
                 <!--FORMULARIO CREAR CLIENTES-->
@@ -77,7 +75,7 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancerlar</button>
-                        <button type="submit" class="btn btn-success">Crear Clientes</button>
+                        <button id="botonCrearModificar" type="submit" class="btn btn-success">Crear Clientes</button>
                     </div>
                 </form>
             </div>
