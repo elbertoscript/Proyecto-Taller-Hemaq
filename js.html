@@ -16,7 +16,7 @@
         eliminarTabla();
 
         //crear icono de carga
-        crearLoader('MC');
+        crearLoader('divClientes');
 
         google.script.run
         .withSuccessHandler(clienteInsertadoCorrectamente)
@@ -34,7 +34,7 @@
         document.getElementById("RUT").value;
 
         //mostrar notificación
-        crearNotificacionOK('Cliente insertado con exito', 'CLIENTE OK');
+        crearNotificacionCliente('Cliente insertado con exito', 'CLIENTE OK');
 
         //ELIMINAR LOADER
         eliminarLoader();
@@ -59,7 +59,7 @@
         eliminarTabla();
 
         //crear icono de carga
-        crearLoader('MC');
+        crearLoader('divClientes');
 
         google.script.run
         .withSuccessHandler(crearTablaContactosCorrectamente)
@@ -112,7 +112,7 @@
         //agregamos clases a la tabla
         tabla.classList.add('table', 'table-striped', 'border', 'border-6', 'border-dark');
         //agregamos tabla a la página
-        document.getElementById('divContactos').appendChild(tabla);
+        document.getElementById('divClientes').appendChild(tabla);
 
         //mostrar notificación de ok
         crearNotificacionOK('Contactos obtenidos correctamente', 'Todo en orden');
@@ -225,7 +225,7 @@
 
 
         //crear icono de carga
-        crearLoader('MC');
+        crearLoader('divClientes');
 
         google.script.run
         .withSuccessHandler(clienteModificadoCorrectamente)
@@ -236,7 +236,7 @@
     function clienteModificadoCorrectamente()
     {
         //mostrar notificación
-        crearNotificacionOK('Cliente Modificado con exito', 'MODIFICADO OK');
+        crearNotificacionCliente('Cliente Modificado con exito', 'MODIFICADO OK');
 
         //ELIMINAR LOADER
         eliminarLoader();
@@ -263,7 +263,7 @@
 
 
         //crear icono de carga
-        crearLoader('MC');
+        crearLoader('divClientes');
 
         google.script.run
         .withSuccessHandler(clienteBorradoCorrectamente)
@@ -274,7 +274,7 @@
     function clienteBorradoCorrectamente()
     {
         //mostrar notificación
-        crearNotificacionOK('Cliente borrado con exito', 'BORRADO OK');
+        crearNotificacionBorrar('Cliente borrado con exito', 'BORRADO OK');
 
         //ELIMINAR LOADER
         eliminarLoader();
@@ -303,6 +303,12 @@
         eliminarLoader();
     }
 
+
+    /*
+    esta so brran pero aca se creaban las notificaciones, ahora al final
+     se crea la función crearNotificaciones en donde se creara todo el div 
+     que esta en el main donde se crea la notificación, esto se colocara 
+     al final de este codigo
 
     function crearNotificacion(mensaje, titulo) {
         document.getElementById("mensajeNotificacion").textContent = mensaje;
@@ -346,7 +352,7 @@
     function crearColorNotificacion(color) {
         let elementoNotificacion = document.getElementById("notificacion");
         elementoNotificacion.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue(color);
-    }
+    }*/
 
     function crearLoader(elementoPadre) {
         eliminarLoader();
@@ -370,5 +376,123 @@
         if (tabla) tabla.remove();
     }
 
+    //
+    //NOTIFICACIONES
+    //
+
+    const ICONO_CHECK = 'bi-check2-square';
+    const ICONO_PAPELERA = 'bi-trash';
+    const ICONO_CLIENTE = 'bi-person-plus-fill';
+    const ICONO_ERROR = 'bi-bug';
+    const ICONO_ADVERTENCIA = 'bi-exclamation-square';
+
+
+    function crearNotificacionOK(mensaje, titulo)
+    {
+        crearNotificacion(titulo, mensaje, ICONO_CHECK , '--color-verde-oscuro')
+    }
+
+    function crearNotificacionError(mensaje, titulo)
+    {
+        crearNotificacion(titulo, mensaje, ICONO_ERROR, '--color-rojo-oscuro')
+    }
+
+    function crearNotificacionCliente(mensaje, titulo)
+    {
+        crearNotificacion(titulo, mensaje, ICONO_CLIENTE, '--color-azul-oscuro')
+    }
+
+    function crearNotificacionAdvertencia(mensaje, titulo)
+    {
+        crearNotificacion(titulo, mensaje, ICONO_ADVERTENCIA, '--color-amarillo-oscuro')
+    }
+
+    function crearNotificacionBorrar(mensaje, titulo)
+    {
+        crearNotificacion(titulo, mensaje, ICONO_PAPELERA, '--color-gris-oscuro')
+    }
+
+    function crearNotificacion(titulo, mensaje, icono, color)
+    {
+        /*se crearan varias cosas, como el atributo, el cuerpo y luego el body de la notificacion*/
+
+        let notificacion = crearAtributosNotificacion();
+        let cabeceraNotificacion = crearCabeceraNotificacion(titulo, icono);
+        let cuerpoNotificacion = crearCuerpoNotificacion(mensaje);
+        
+        //agregar cabecera y cuerpo
+        notificacion.appendChild(cabeceraNotificacion);
+        notificacion.appendChild(cuerpoNotificacion);
+
+        //establecer color
+        notificacion.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue(color);
+
+        //evento
+
+        notificacion.addEventListener('hidden.bs.toast', function () 
+            {
+               this.remove();
+            }
+        );
+
+        //agregamos el contenedor de notificaciones
+            document.getElementById('contenedorNotificaciones').appendChild(notificacion);
+
+        //instancia y mostrar
+
+        bootstrap.Toast.getOrCreateInstance(notificacion).show();
+
+    }
+
+    function crearCuerpoNotificacion(mensaje)
+    {
+        let cuerpoNotificacion = document.createElement('div');
+        cuerpoNotificacion.classList.add('toast-body');
+        cuerpoNotificacion.textContent = mensaje;
+        return cuerpoNotificacion;
+    }
+
+    function crearAtributosNotificacion()
+    {
+        let notificacion = document.createElement('div');
+        notificacion.classList.add('toast', 'aling-items-center', 'text-white', 'border-0');
+        notificacion.setAttribute('role', 'alert');
+        notificacion.setAttribute('aria-live', 'assertive');
+        notificacion.setAttribute('aria-atomic', 'true');
+        return notificacion;
+
+    }
+
+    function crearIconoNotificacion(contenedor, icono)
+    {
+        let divIcono = document.createElement('div');
+        let iconoNotificacion = document.createElement('i');
+        divIcono.classList.add('icono-notificacion');
+        iconoNotificacion.classList.add('bi', icono);
+        divIcono.appendChild(iconoNotificacion);
+        contenedor.appendChild(divIcono);       
+
+    }
+
+        function crearCabeceraNotificacion(titulo, icono)
+    {
+        //crear cabecera
+        let cabeceraNotificacion = document.createElement('div');
+        cabeceraNotificacion.classList.add('toast-header',  'p-0');
+
+        //creamos el icono, pasando el contenedor
+        crearIconoNotificacion(cabeceraNotificacion,icono);
+
+        //creamos el titulo
+        let tituloNotificacion = document.createElement('strong');
+        tituloNotificacion.classList.add('mx-2');
+        tituloNotificacion.textContent = titulo;
+
+        cabeceraNotificacion.appendChild(tituloNotificacion);
+        return cabeceraNotificacion;
+
+    }
+
+    
 
 </script>

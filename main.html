@@ -1,33 +1,22 @@
 <main>
     <!--Botones Superiores-->
-    <div class="container-lg d-flex justify-content-center my-3">
-
+    <div class="d-flex justify-content-center my-3">
         <button type="button" class="btn btn-success m-3" onclick="crearTablaClientes()">Mostrar Clientes</button>
         <button type="button" class="btn btn-primary m-3" onclick="abrirModalCrearCliente()">Crear Cliente</button>
     </div>
 
-    <!--icono Espera-->
-    <div class="d-flex justify-content-center" id="MC"></div>
-
+    
     <!--Tabla de clientes-->
-    <div class="col-12 col-lg-10 d-flex " id="divContactos"></div>
+    <div class="container col-12 col-lg-8 d-flex justify-content-center" id="divClientes"></div>
 
     <!--NOTIFICACIONES-->
     <div>
-        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-            <!-- toast -->
-            <div id="notificacion" class="toast align-items-center text-white border-0" role="alert"
-                aria-live="assertive" aria-atomic="true">
-
-                <div class="toast-header p-0">
-                    <div class="icono-notificacion"><i id="iconoNotificacion"></i></div>
-                    <strong class="me-auto" id="tituloNotificacion"></strong>
-                    <button type="button" class="btn-close m-2" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-
-                <div class="toast-body" id="mensajeNotificacion"></div>
-
+        <div class="div-notificaciones position-fixed bottom-0 end-0 p-3">
+            <div class="toas-container" id="contenedorNotificaciones">
+                <!--aca van las notificaciones/-->
+                
             </div>
+
         </div>
     </div>    
 
